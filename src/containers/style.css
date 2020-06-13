@@ -1,0 +1,355 @@
+
+.App{
+    width:100%;
+    height:100%;
+}
+
+/* Header.js */
+.Header {
+    height: 30px;
+    width: 100%;
+}
+.HeaderItemContainer{
+    float:left;
+    width:8em;
+    height: 100%;
+    cursor: pointer;
+    padding-top:0.5em;
+    padding-bottom:0.5em;
+
+}
+.HeaderItemContainer > div {
+    width: 100%;
+    height: 100%;
+    text-align:center;
+}
+.SelectedItem {
+    background-color: skyblue;
+}
+
+/* Main.js */
+.Main{
+    width: 100%;
+    height: 100%;
+    clear: both
+}
+.MainContainer {
+    height: 100%;
+    flex:1;
+    border: 1px solid green;
+    margin-left: 150px;
+    overflow: auto;
+}
+.navigatorContainer {
+    float: left;
+    width: 150px;
+    height: 100%;
+    left:0;
+    border: 0.7px solid black
+}
+.navigatorContainer > .SelectedItem{
+    color: darkcyan
+}
+.navigatorTitle{
+    font-size:1rem;
+    text-align: center;
+    padding-top:20px;
+    padding-left:5px;
+}
+.navigatorMenu{
+    font-size: 0.8em;
+    margin-top:30px;
+    padding-top:10px;
+    padding-bottom:10px;
+    padding-left:5px;
+    background-color:lightgrey;
+}
+.navigatorItem{
+    font-size: 0.6em;
+    padding-top:5px;
+    padding-bottom:5px;
+    cursor: pointer;
+    padding-left:10px;
+}
+
+.MainTitle{
+    font-size: 0.9em;
+}
+.MainSubtitle{
+    font-size: 0.8em;
+    padding:10px;
+    clear:both;
+    
+}
+.MainContentContainer{
+    border-top:black 1px solid;
+    margin-left:20px;
+    margin-right:20px;
+    margin-bottom:20px;
+}
+.SoundListSearchContainer{
+    padding-left:20px;
+    padding-right:20px;
+}
+.SoundListSearchContainer > div{
+    display:flex;
+    height:2em;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.SoundListSearchContainer > div > div{
+    display:flex;
+    padding-top:4px;
+    padding-bottom:4px;
+    padding-left:10px;
+}
+.SoundListSearchTitle {
+    left:0;
+    width:7em;
+    padding:10px;
+    font-size:0.7em;
+    background-color: lightgray;
+}
+
+.SoundListSearchButton{
+    width: 100%;
+    display:flex;
+    justify-items: center;
+    margin:20px;
+}
+.SoundListSearchButton > *{
+    margin: 0px auto;
+    width:100px;
+    height:40px;
+}
+
+.SoundListSearchInput{
+    width:400px;
+    margin-left:10px;
+}
+.SoundListSearchTime{
+    width:100px;
+    margin-left:10px;
+    margin-right:10px;
+}
+
+
+.SoundInfoText > div{
+    font-size:0.5rem;
+    padding-top:10px;
+    float: left;
+}
+.SoundInfoTable{
+    border-collapse: collapse;
+    width: 90%;
+    padding: 10px;
+
+    border: 1px solid black;
+}
+.TableTitle > tr > th {
+    height:2em;
+    text-align:center;
+    font-size:0.8rem;
+    background-color: lightgray;
+    border-top: 0.3px solid black;
+    border-bottom: 0.3px solid black;
+    border-right:0.3px solid black
+}
+.TableItem > tr > *{
+    height:2em;
+    text-align:center;
+    font-size:0.7rem;
+    padding-left:5px;
+    padding-right:5px;
+    border-bottom: 0.3px solid black;
+    border-right:0.3px solid lightgray
+}
+.UnselectedPage{
+    font-size:1rem;
+}
+.SelectedPage {
+    font-Weight: bold;
+    font-size:1rem;
+}
+.SoundAppendTableRow{
+    width: 100%;
+    padding: 2px;
+    border-top: 1px solid black;
+}
+
+.SoundAppendTableRow > div {
+    height:100%;
+    float:left;
+    margin-right:10px;
+}
+.SoundAppendTableOneRow {
+    height:30px;
+}
+.SoundAppendTableMultiRow{
+    height: 80px;
+}
+.SoundAppendTableRow > div > * {
+    margin: auto;
+}
+.SoundAppendTableRow > div > input {
+    width:280px
+}
+
+.SoundAppendTableHead{
+    width: 70px;
+    font-size:0.7em;
+    height:100%;
+    text-align: center;
+    background-color: lightgray;
+}
+
+.SoundAppendTableRow > .Clear {
+    clear: both;
+    width:0px;
+    padding:0px;
+    margin:0px
+}
+
+
+.ConnectCategoryContainer{
+    height:90px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding:10px
+}
+.ConnectCategoryContainer > div{
+    float: left;
+    margin:0;
+    margin-left:5px;
+    margin-right:5px;
+    width:120px;
+    height:100%;
+}
+.ConnectCategoryContainer > div > div{
+    font-size: 0.8em;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    background-color: lightgray;
+    height:20px;
+    text-align:center;
+    padding:0;
+    margin:0;
+    width:120px;
+}
+.ConnectCategoryContainer > div > span {
+    position: relative;
+    top: 30px;
+    height:40px;
+    width:60px;
+    font-size: 1em;
+    margin-left:50px;
+    padding:10px;
+    cursor: pointer;
+    border: 1px solid black;
+    background-color: lightgray;
+    border-radius: 20%;
+
+}
+.ConnectCategoryContainer > div > ul{
+    list-style-type: none;
+    overflow:hidden;
+    overflow-y:scroll;
+    margin:0;
+    padding:0px;
+    width:120px;
+    height:80%;
+    border: 1px solid black;
+}
+.ConnectCategoryContainer > div > ul > li{
+    font-size: 0.7em;
+    overflow-x: hidden;
+    margin-top:2px;
+}
+
+
+.CategoryContainer{
+    height:300px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding:10px
+}
+.CategoryContainer > div{
+    float: left;
+    margin:0;
+    margin-left:5px;
+    margin-right:5px;
+    width:180px;
+    height:100%;
+}
+.CategoryContainer > div > div{
+    font-size: 0.8em;
+    height:25px;
+    text-align:center;
+    padding:0;
+    margin:0;
+    width:180px;
+}
+
+.CategoryContainer > div > div > button{
+    height:25px;
+    width: 60px;
+    font-size: 0.6em;
+}
+.CategoryContainer > div > span {
+    position: relative;
+    top: 30px;
+    height:40px;
+    width:180px;
+    font-size: 1em;
+    margin-left:50px;
+    padding:10px;
+    cursor: pointer;
+    border: 1px solid black;
+    background-color: lightgray;
+    border-radius: 20%;
+
+}
+.CategoryContainer > div > ul{
+    list-style-type: none;
+    overflow:hidden;
+    overflow-y:scroll;
+    margin:0;
+    padding:0px;
+    width:180px;
+    height:80%;
+    border: 1px solid black;
+}
+.CategoryContainer > div > ul > li{
+    font-size: 0.7em;
+    overflow-x: hidden;
+    margin-top:2px;
+}
+
+.ThemeContainer{
+    display: flex
+}
+.ThemeContainer > div{
+    flex:1;
+    border: 1px solid black;
+    margin: 40px;
+    font-size: 1.2em;
+}
+.ThemeItem{
+    padding: 5px;
+}
+.ThemeItem > p{
+    padding: 0;
+    margin:0;
+    font-size: 0.8em
+}
+
+.ThemeItem > ul{
+    padding: 0;
+    margin:0;
+    list-style:none;
+}
+.ThemeItem > ul > li{
+    font-size: 0.5em;
+    padding-left:10px;
+}
