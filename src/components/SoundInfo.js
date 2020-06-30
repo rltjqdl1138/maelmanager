@@ -41,6 +41,7 @@ export default class SoundInfo extends Component{
         const start = (page-1)*limit
         const pageList = this.getPagelist(page, total, limit)
         const soundinfoList = info.slice( start, start + limit).map((item, index)=>{
+            const date = item.createdTime ? new Date(item.createdTime) : null
             return (
                 <tr key={index} >
                     <th onClick={()=>handleUpdateID(item.MID)}>{item.title}</th>
@@ -50,7 +51,7 @@ export default class SoundInfo extends Component{
                     <td>{item.author}</td>
                     <td>{item.publisher}</td>
                     <td>{item.info}</td>
-                    <td>0000-00-00</td>
+                    <td>{date?date.toLocaleDateString():'-'}</td>
                     <td onClick={()=>handleMID(item.MID)}>
                         보기
                     </td>

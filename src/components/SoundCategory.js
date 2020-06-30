@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 
+
 export default class SoundCategory extends Component{
     constructor(props){
         super(props)
@@ -401,6 +402,21 @@ class CategoryInfo extends Component{
         )
 
     }
+    fileupload = (file)=> {
+        const album = !this.state.album.ID||this.state.album.ID !==this.props.album.ID ? this.props.album : this.state.album 
+        const data = new FormData()
+        console.log(file[0])
+        data.append('albumart', file[0])
+        axios.post("/image", data).then(response=>{
+            response.status === 200 ?
+                this.handleChange('album',{...album, uri:response.data}) :
+                this.handleChange('album',{...album, uri:''})
+        }).catch(e=>console.log(e))
+    }
+    handleAlbumCategorySubmit = (e)=>{
+        e.preventDefault()
+
+    }
     albumCategory = ()=>{
         const album = !this.state.album.ID||this.state.album.ID !==this.props.album.ID ? this.props.album : this.state.album 
         return (
@@ -435,8 +451,18 @@ class CategoryInfo extends Component{
                                     onChange={(e)=>this.handleChange('album',{...album, info:e.target.value})}/>
                             </td>
                         </tr>
+                        <tr>
+                            <th>이미지</th>
+                            <td>
+                                <input name="albumart" type="file" onChange={ (e) => this.fileupload(e.target.files) }/>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
+
+                <img height="200" src={`/image/${album.uri?album.uri :''}`}/>
+
+                
             </div>
         )
 
@@ -445,10 +471,10 @@ class CategoryInfo extends Component{
         const {high, middle, low, album} = this.props
         return (
             <div className="CategoryInfo">
-                {high?this.highCategory():null}
-                {middle?this.middleCategory():null}
-                {low?this.lowCategory():null}
                 {album?this.albumCategory():null}
+                {low?this.lowCategory():null}
+                {middle?this.middleCategory():null}
+                {high?this.highCategory():null}
             </div>
         )
     }
