@@ -40,12 +40,13 @@ export default class Theme extends Component{
         return ( <div>{l}</div> )
     }
     registerItem = ()=>{
-        const left = this.state.registered[this.state.registeredIndex].ID
-        console.log(left)
-    }
-    unregisterItem = ()=>{
         const right = this.state.unregistered[this.state.unregisteredIndex].ID
         console.log(right)
+    }
+    unregisterItem = ()=>{
+
+        const left = this.state.registered[this.state.registeredIndex].ID
+        console.log(left)
 
     }
     render(){

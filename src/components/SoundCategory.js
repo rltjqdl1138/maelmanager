@@ -20,7 +20,7 @@ export default class SoundCategory extends Component{
 
     handleChange = (field, value) => this.setState({ [field]: value })
     registerCategory = async (group)=>{
-        const {selectedID} = this.state
+        const {selectedID, selectedIndex} = this.state
         let upperID;
         switch(group){
             case 0: break;
@@ -39,7 +39,7 @@ export default class SoundCategory extends Component{
         const result = await axios.post('/api/media/category',{upperID, group})
         if(!result.data.success)
             return;
-        await this.getList(group, upperID, null)
+        group===0 ? await this.getList(0, undefined) : await this.getList(group, selectedID[group-1], selectedIndex[group-1]) 
     }
     deleteCategory = async (group)=>{
         const {selectedID, selectedIndex} = this.state
@@ -85,6 +85,7 @@ export default class SoundCategory extends Component{
         return
     }
     setList = async(type, id, _index, list)=>{
+        //              2 1 null data
         const {high, middle, low, selectedIndex, album, selectedID} = this.state
         const index = _index===undefined || _index===null? list.length-1 : _index  
         let newState = {
@@ -121,6 +122,7 @@ export default class SoundCategory extends Component{
         return this.setState(newState)
     }
     getList = async(type, id, index)=>{
+        // 2 1 null
         if(type>3)
             return this.setList(type, id, index)
         const types = ['high', 'middle', 'low', 'album']
@@ -135,7 +137,7 @@ export default class SoundCategory extends Component{
         const id = group > 0 ? selectedID[group-1] : 0
         const url = '/api/media/category?type='+types[group] + (id?`&id=${id}`:'')
         const response = await axios.get(url)
-        console.log(response.data)
+
         return response.data.success ? this.handleChange(types[group], response.data.data) : null
     }
     highCategory = ()=>{
@@ -225,7 +227,6 @@ export default class SoundCategory extends Component{
             album[selectedIndex[3]]
         ]
         
-        console.log(list)
         handleSavedCategory(list)
         
     }
@@ -253,6 +254,10 @@ export default class SoundCategory extends Component{
         )
     }
 }
+
+
+
+
 
 class CategoryInfo extends Component{
     constructor(props){
@@ -405,7 +410,6 @@ class CategoryInfo extends Component{
     fileupload = (file)=> {
         const album = !this.state.album.ID||this.state.album.ID !==this.props.album.ID ? this.props.album : this.state.album 
         const data = new FormData()
-        console.log(file[0])
         data.append('albumart', file[0])
         axios.post("/image", data).then(response=>{
             response.status === 200 ?
