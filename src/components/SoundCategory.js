@@ -41,6 +41,9 @@ export default class SoundCategory extends Component{
             return;
         group===0 ? await this.getList(0, undefined) : await this.getList(group, selectedID[group-1], selectedIndex[group-1]) 
     }
+    handleDeleteCategory = (group) =>
+        window.confirm('삭제하시겠습니까?') ? this.deleteCategory(group) : null
+    
     deleteCategory = async (group)=>{
         const {selectedID, selectedIndex} = this.state
         switch(group){
@@ -152,7 +155,7 @@ export default class SoundCategory extends Component{
             <div>
                 <div>
                     <button onClick={()=>this.registerCategory(0)}>추가</button>
-                    <button onClick={()=>this.deleteCategory(0)}>삭제</button>
+                    <button onClick={()=>this.handleDeleteCategory(0)}>삭제</button>
                     <button>비활성</button>
                 </div>
                 <ul> {list} </ul>
@@ -170,7 +173,7 @@ export default class SoundCategory extends Component{
             <div>
                 <div>
                     <button onClick={()=>this.registerCategory(1)}>추가</button>
-                    <button  onClick={()=>this.deleteCategory(1)}>삭제</button>
+                    <button  onClick={()=>this.handleDeleteCategory(1)}>삭제</button>
                     <button>비활성화</button>
                 </div>
                 <ul> {list} </ul>
@@ -189,7 +192,7 @@ export default class SoundCategory extends Component{
             <div>
                 <div>
                     <button onClick={()=>this.registerCategory(2)}>추가</button>
-                    <button onClick={()=>this.deleteCategory(2)}>삭제</button>
+                    <button onClick={()=>this.handleDeleteCategory(2)}>삭제</button>
                     <button>비활성화</button>
                 </div>
                 <ul> {list} </ul>
@@ -208,7 +211,7 @@ export default class SoundCategory extends Component{
             <div>
                 <div>
                     <button onClick={()=>this.registerCategory(3)}>추가</button>
-                    <button onClick={()=>this.deleteCategory(3)}>삭제</button>
+                    <button onClick={()=>this.handleDeleteCategory(3)}>삭제</button>
                     <button>비활성화</button>
                 </div>
                 <ul> {list} </ul>
