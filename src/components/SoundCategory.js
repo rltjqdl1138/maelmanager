@@ -372,7 +372,7 @@ class CategoryInfo extends Component{
                                     value='0'
                                     checked={low.designType===0}
                                     onChange={(e)=>this.handleChange('low',{...low, designType:0})}/>
-                                    원형 + 윤곽선 O
+                                    사각형 + 윤곽선 X
                             </td>
                             <td>
                                 <input
@@ -381,10 +381,11 @@ class CategoryInfo extends Component{
                                     value='1'
                                     checked={low.designType===1}
                                     onChange={(e)=>this.handleChange('low',{...low, designType:1})}/>
-                                원형 + 윤곽선 X
+                                사각형 + 윤곽선 O
                             </td>
 
                             <td>
+
                                 
                                 <input
                                     type="radio"
@@ -392,7 +393,7 @@ class CategoryInfo extends Component{
                                     value='2'
                                     checked={low.designType===2}
                                     onChange={(e)=>this.handleChange('low',{...low, designType:2})}/>
-                                사각형 + 윤곽선 O
+                                원형 + 윤곽선 X
                             </td>
                             <td>
                                 <input
@@ -401,7 +402,7 @@ class CategoryInfo extends Component{
                                     value='3'
                                     checked={low.designType===3}
                                     onChange={(e)=>this.handleChange('low',{...low, designType:3})}/>
-                                사각형 + 윤곽선 X
+                                원형 + 윤곽선 O
                             </td>
                         </tr>
                     </tbody>
