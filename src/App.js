@@ -33,8 +33,9 @@ const menu=[
         {title:'사운드 등록', page:1},
         '진열 관리',
         {title:'메인 진열 관리', page:2},
+        {title:'메뉴바 진열 관리', page:3},
         '분류 관리',
-        {title:'카테고리 관리', page:3},
+        {title:'카테고리 관리', page:4},
     ]},
     {title:'음원', subPage:[
         {title:'사운드 리스트', page:0},

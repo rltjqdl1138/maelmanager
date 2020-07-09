@@ -8,6 +8,7 @@ import SoundAppendCategory from '../components/SoundAppendCategory'
 import SoundAppendCategoryList from '../components/SoundAppendCategoryList'
 import SoundCategory from '../components/SoundCategory'
 import Theme from '../components/Theme'
+import MenuCategory from '../components/MenuCategory'
 
 export default class Sound extends Component{
     getMain = (page)=>{
@@ -19,6 +20,8 @@ export default class Sound extends Component{
             case 2:
                 return (<ThemeAlign />)
             case 3:
+                return (<Menu />)
+            case 4:
                 return (<CategoryAlign />)
             default:
                 return (<div />)
@@ -124,6 +127,18 @@ class ThemeAlign extends Component{
                 <Theme />
             </div>
         )
+    }
+}
+
+class Menu extends Component{
+    render(){
+        return (
+            <div className="MainContainer">
+                <div className="MainTitle">
+                    메뉴 진열 관리
+                </div>
+                <MenuCategory />
+            </div>)
     }
 }
 
