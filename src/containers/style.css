@@ -267,7 +267,25 @@
     margin-top:2px;
 }
 
-
+.SidebarContainer{
+    width:200px;
+    float: left;
+}
+.SidebarContainer > div{
+    width:200px;
+    margin-bottom:5px;
+}
+.SidebarContainer > div > ul{
+    list-style-type: none;
+    overflow:hidden;
+    overflow-y:scroll;
+    margin:0;
+    padding:0px;
+    width:180px;
+    height:200px;
+    border: 1px solid black;
+    margin-bottom:40px;
+}
 .CategoryContainer{
     height:300px;
     border-top: 1px solid black;
