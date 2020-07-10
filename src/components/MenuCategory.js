@@ -38,32 +38,35 @@ export default class MenuCategory extends Component {
         const {data} = await axios(`/api/media/category?type=${group}`+ (id?`&id=${id}`:''))
         return data.success ? this.handleChange(group, data.data) : null
     }
+    updateRegisteredList = async()=>{
+        const {data} = await axios.put('/api/media/sidebar',{
+            list: this.state.registered
+        })
+    }
     handleActive = (group)=>{
         let newList, item, highIndex, middleIndex, wholeList
         const {downComponent, isSelectedUp, registered, selectedID, high, middle, low} = this.state
         if(downComponent.group !== group || isSelectedUp) return;
-        console.log(group, downComponent)
         switch(group){
             case 0:
                 item = high.find(e => e.ID === downComponent.ID)
                 wholeList = [...registered, {ID:item.ID, title:item.title, list:[]}]
                 break;
             case 1:
-                highIndex = high.findIndex(e => e.ID === selectedID[0])
+                highIndex = registered.findIndex(e => e.ID === selectedID[0])
                 item = middle.find(e => e.ID === downComponent.ID)
                 newList = [...registered[highIndex].list, {ID:item.ID, title:item.title, list:[]}]
                 registered[highIndex].list = newList
                 wholeList = registered
                 break;
             case 2:
-                highIndex = high.findIndex(e => e.ID === selectedID[0])
-                middleIndex = middle.findIndex(e => e.ID === selectedID[0])
+                highIndex = registered.findIndex(e => e.ID === selectedID[0])
+                middleIndex = registered[highIndex].list.findIndex(e => e.ID === selectedID[0])
                 item = low.find(e => e.ID === downComponent.ID)
                 newList = [...registered[highIndex].list[middleIndex].list, {ID:item.ID, title:item.title, list:[]}]
                 registered[highIndex].list[middleIndex].list = newList
                 wholeList = registered
         }
-        console.log(wholeList)
         this.handleChange('registered', wholeList)
     }
     handleDeactive = (group)=>{
@@ -77,9 +80,9 @@ export default class MenuCategory extends Component {
                 wholeList = [...registered.slice(0,highIndex), ...registered.slice(highIndex+1,registered.length)]
                 break;
             case 1:
-                highIndex = high.findIndex(e => e.ID === selectedID[0])
-                middleIndex = middle.findIndex(e => e.ID === selectedID[1])
-
+                highIndex = registered.findIndex(e => e.ID === selectedID[0])
+                middleIndex = registered[highIndex].list.findIndex(e => e.ID === selectedID[1])
+                
                 oldList = registered[highIndex].list
                 newList = [...oldList.slice(0,middleIndex), ...oldList.slice(middleIndex+1, oldList.length)]
                 
@@ -135,6 +138,7 @@ export default class MenuCategory extends Component {
         }),()=>this.getCategory(GROUP[group], selectedID[group-1]))
     }
     getSeperatedList= () =>{
+        let ind, item, list
         const {high, middle, low, registered, selectedID} = this.state
         let regHigh = []
         let unregHigh = []
@@ -143,25 +147,28 @@ export default class MenuCategory extends Component {
         let regLow = []
         let unregLow = []
 
-        let list = registered
-        high.map(item => list.find(e => e.ID === item.ID) ?
-            regHigh = [...regHigh, {ID:item.ID, title:item.title}] :
-            unregHigh = [...unregHigh, {ID:item.ID, title:item.title}]
-        )
+        list = registered
+        high.map(item => {
+            ind = list.findIndex(e => e.ID === item.ID)
+            ind < 0 ? unregHigh = [...unregHigh, {ID:item.ID, title:item.title}]:
+                regHigh[ind] = {ID:item.ID, title:item.title}
+        })
 
-        let item = list.find(e => e.ID === selectedID[0])
+        item = list.find(e => e.ID === selectedID[0])
         list = selectedID[0] && item ? item.list : []
-        middle.map(item => list.find(e => e.ID === item.ID) ?
-            regMiddle = [...regMiddle, {ID:item.ID, title:item.title}] :
-            unregMiddle = [...unregMiddle, {ID:item.ID, title:item.title}]
-        )
+        middle.map(item => {
+            ind = list.findIndex(e => e.ID === item.ID)
+            ind < 0 ? unregMiddle = [...unregMiddle, {ID:item.ID, title:item.title}]:
+                regMiddle[ind] = {ID:item.ID, title:item.title}
+        })
 
         item = list ? list.find(e => e.ID === selectedID[1]) : null
         list = selectedID[1] && item ? item.list : []
-        low.map(item => list.find(e => e.ID === item.ID) ?
-            regLow = [...regLow, {ID:item.ID, title:item.title}] :
-            unregLow = [...unregLow, {ID:item.ID, title:item.title}]
-        )
+        low.map(item => {
+            ind = list.findIndex(e => e.ID === item.ID)
+            ind < 0 ? unregLow = [...unregLow, {ID:item.ID, title:item.title}]:
+                regLow[ind] = {ID:item.ID, title:item.title}
+        })
 
         return { regHigh, unregHigh, regMiddle, unregMiddle, regLow, unregLow }
     }
@@ -172,6 +179,9 @@ export default class MenuCategory extends Component {
         const seperatedList = this.getSeperatedList()
         return (
             <div>
+                <div>
+                    <button onClick={this.updateRegisteredList}>저장하기</button>
+                </div>
                 <div className="SidebarContainer">
                     <div>
                         <button>위로</button>
