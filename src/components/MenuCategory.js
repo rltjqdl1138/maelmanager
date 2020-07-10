@@ -256,7 +256,7 @@ class ItemList extends Component{
             <li key={index}
                 className={index === selectedIndex ? "SelectedItem": ""}
                 onClick={()=>handleClick(item.ID, index)}>
-                {`${item.ID} ${index} ${item.title}`}
+                {`${item.title}`}
             </li>
         ))
         return (
