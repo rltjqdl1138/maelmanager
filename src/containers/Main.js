@@ -3,6 +3,7 @@ import Sound from './SoundList'
 import Analysis from './Analysis'
 import UserList from './UserList'
 import Sidebar from './Sidebar'
+import Notice from './Notice'
 
 export default class MainContainer extends Component{
     getMain = (page, subPage)=>{
@@ -14,7 +15,7 @@ export default class MainContainer extends Component{
             case 2:
                 return (<UserList page={subPage} />)
             case 3:
-                return null
+                return (<Notice page={subPage} />)
             case 4:
                 return null
             case 5:

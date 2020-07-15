@@ -70,8 +70,7 @@ class UserInfo extends Component{
             limit:10
         }
     }
-    handleChange = (field, value) =>
-        this.setState({ [field]: value })
+    handleChange = (field, value) => this.setState({ [field]: value })
     
     getPagelist = (page, total, limit)=>{
         const totalPage = Math.ceil(total / limit)
