@@ -44,7 +44,10 @@ export default class SoundInfo extends Component{
             const date = item.createdTime ? new Date(item.createdTime) : null
             return (
                 <tr key={index} >
-                    <th onClick={()=>handleUpdateID(item.MID)}>{item.title}</th>
+                    <th 
+                        style={{cursor:'pointer'}}
+                        onClick={()=>handleUpdateID(item.MID)}>{item.title}
+                    </th>
                     <td>{item.category}</td>
                     <td>{item.songCreator}</td>
                     <td>{item.lyricCreator}</td>

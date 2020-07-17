@@ -43,6 +43,7 @@ export default class SoundAppendInfo extends Component{
                     </div>
                     <div>
                         <input name="title" type="text"
+                            style={{cursor:'pointer'}}
                             value={title}
                             onChange={(e)=>handleChange('title',e.target.value)}
                         />
