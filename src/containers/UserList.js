@@ -166,6 +166,10 @@ class StayUserList extends Component{
         super(props)
         this.state={list:[]}
     }
+    handleTest = async()=>{
+        const a = await fetch('http://server.kimki.kr', {mode:'no-cors'})
+        console.log(a)
+    }
     handleChange = (field, value) => this.setState({ [field]: value })
     render(){
         return (
@@ -173,6 +177,7 @@ class StayUserList extends Component{
                 <div className="MainTitle">
                     휴면회원관리
                 </div>
+                <button onClick={()=>this.handleTest()}>클릭</button>
             </div>
         )
     }
