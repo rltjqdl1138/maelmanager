@@ -4,7 +4,7 @@ import axios from 'axios'
 export default class Notice extends Component{
     constructor(props){
         super(props)
-        this.state={list:[], selectedIndex:-1}
+        this.state={list:[], selectedIndex:-1, text:''}
     }
     componentDidMount(){
         this.getNoticeList()
@@ -13,7 +13,7 @@ export default class Notice extends Component{
     getNoticeList = async()=>{
         const response = await axios.get('/api/notice')
         if(!response.data.success) return;
-        this.setState({list: response.data.data, selectedIndex:-1})
+        this.setState({list: response.data.data, selectedIndex:-1, text:''})
     }
     getMain = (page, id)=>{
         switch(page){
@@ -23,14 +23,25 @@ export default class Notice extends Component{
                 return (<div />)
         }
     }
+    registerNotice = async ()=>{
+        const {text} = this.state
+        await axios.post(`/api/notice/${text}`)
+        this.getNoticeList()
+    }
+    deleteNotice = async ()=>{
+        if(!window.confirm('삭제하시겠습니까?'))
+            return;
+        const {list, selectedIndex} = this.state
+        await axios.delete(`/api/notice/${list[selectedIndex]}`)
+        this.getNoticeList()
+    }
     render(){
         const {page} = this.props
-        const {list, selectedIndex} = this.state
+        const {list, selectedIndex, text} = this.state
         const menu = list.map((item, index)=>(
             <li key={index}
                 className={index===selectedIndex?"SelectedItem":""}
-                onClick={()=>this.handleChange('selectedIndex', index)}
-                >
+                onClick={()=>this.handleChange('selectedIndex', index)}>
                 {item}
             </li>
         ))
@@ -39,7 +50,13 @@ export default class Notice extends Component{
                 <div className="MainTitle">
                     게시판 관리
                 </div>
+                <div>
+                    <input type="text" value={text} onChange={(e)=>this.handleChange('text',e.target.value)}/>
+                    <button onClick={()=>this.registerNotice()} disabled={!text.length}>추가하기</button>
+                    <button onClick={()=>this.deleteNotice()} disabled={!list[selectedIndex]}>삭제하기</button>
+                </div>
                 <ul>{menu}</ul>
+                <div style={{backgroundColor:'gray', height:1, marginBottom:40}}/>
                 {selectedIndex >= 0 ? this.getMain(page, list[selectedIndex]) : null}
             </div>
         )
@@ -102,7 +119,30 @@ class NoticeItem extends Component{
         }
         return `#${toHex(r)}${toHex(g)}${toHex(b)}`
     }
-    
+    updateNotice = async()=>{
+        const {title, list, id} = this.state
+        console.log(title, id)
+        const response = await axios.put(`/api/notice/${id}`,{title, main:list})
+        console.log(response)
+    }
+    AddItem = ()=>{
+        const {list, selectedIndex} = this.state
+        if(selectedIndex < 0)
+            return this.handleChange('list', [{text:'new'}, ...list])
+        const pre = list.slice(0,selectedIndex+1)
+        const back = list.slice(selectedIndex+1, list.length)
+        this.handleChange('list', [...pre, {text:'new'}, ...back])
+    }
+    DeleteItem = ()=>{
+        const {list, selectedIndex} = this.state
+        if(selectedIndex < 0) return;
+        else if(selectedIndex === list.length - 1)
+            this.handleChange('selectedIndex', selectedIndex-1)
+        const pre = list.slice(0,selectedIndex)
+        const back = list.slice(selectedIndex+1, list.length)
+        this.handleChange('list', [...pre, ...back])
+
+    }
     getEditer = (index)=>{
         if(index < 0) return null;
         const list = this.state.list
@@ -153,23 +193,34 @@ class NoticeItem extends Component{
                                 />
                                 pt
                             </td>
-                            <td>
-                                Link
-                            </td>
-                            <td>
-                                {item.link ? item.link : ''}
-                            </td>
                         </tr>
                     </tbody>
                 </table>
                 <textarea style={{width:'100%'}}
-                    rows={5}
+                    rows={20}
                     value={item.text}
                     onChange={(e)=>{
                         list[index].text = e.target.value
                         this.handleChange('list', list)
                     }}
                 />
+                링크  
+                <select value={item.link}
+                    onChange={(e)=>{
+                        list[index].link = e.target.value
+                        this.handleChange('list', list)
+                    }}>
+                    <option value=''>없음</option>
+                    <option value="Loginpage">로그인 페이지</option>
+                    <option value="Signuppage">회원가입</option>
+                    <option value="Findidpage">아이디 찾기</option>
+                    <option value="Findpasswordpage">비밀번호 찾기</option>
+                    <option value="Planpage">플랜 선택</option>
+                    <option value="Userinfopage">개인정보</option>
+                    <option value="Accountinfopage">계정정보</option>
+                    <option value="Noticepage">공지사항</option>
+                    <option value="HumanModal">휴면계정으로</option>
+                </select>
             </div>
         )
     }
@@ -177,25 +228,53 @@ class NoticeItem extends Component{
         const {title, list, selectedIndex} = this.state
         const items = list.map((item, index)=>{
             return(
-                <div key={index} style={{width:'80%'}}
+                <div key={index} style={{width:'95%'}}
                     onClick={ ()=>this.handleChange('selectedIndex', index)}>
-                    <p className={index===selectedIndex ? "SelectedItem" : ""}
-                        style={{
-                        color: item.color ? item.color : '#121111',
-                        fontSize: item.fontSize ? item.fontSize : 10,
-                        fontWeight: item.fontWeight ? item.fontWeight : 'normal'
-                    }}>
-                        {item.text}
-                    </p>
-                    {index === selectedIndex ? this.getEditer(index) : null}
+                        <span style={{width:'15%', float:'left', textAlign:'center', margin:'auto', fontSize:10}}>
+                            <p>{item.link && item.link.length > 0 ? Pagelist[item.link] : ''}</p>
+                        </span>
+                        <span style={{width:'85%', float:'left'}} className={index===selectedIndex ? "SelectedItem" : ""}>
+                            <p style={{
+                                color: item.color ? item.color : '#121111',
+                                fontSize: item.fontSize ? item.fontSize : 10,
+                                fontWeight: item.fontWeight ? item.fontWeight : 'normal' }}>
+                                {item.link&&item.link.length>0 ? (<u>{item.text}</u>):item.text}
+                            </p>
+                        </span>
                 </div>)
         })
         return (
             <div>
-                {title}
-                {items}
+                제목 <input type="text" value={title} onChange={(e)=>this.handleChange('title', e.target.value)}/>
+                <div>
+                    <button onClick={this.updateNotice}>저장하기</button>
+                    <button onClick={this.AddItem}>추가하기</button>
+                    <button onClick={this.DeleteItem}>삭제하기</button>
+                </div>
+                <div>
+                    <span style={{width:'50%', float:'left'}}>
+                        {items}
+                    </span>
+                    <span style={{width:'30%', float:'left'}}>
+                        {selectedIndex >=0 ? this.getEditer(selectedIndex) : null}
+                    </span>
+                </div>
+
             </div>
         )
     }
 
+}
+
+
+const Pagelist = {
+    'Loginpage':'로그인 페이지',
+    'Signuppage':'회원가입',
+    "Findidpage":'아이디 찾기',
+    "Findpasswordpage":'비밀번호 찾기',
+    "Planpage":'플랜 선택',
+    "Userinfopage":'개인정보',
+    "Accountinfopage":'계정정보',
+    "Noticepage":'공지사항',
+    "HumanModal":"휴면계정으로"
 }
