@@ -55,7 +55,7 @@ export default class Notice extends Component{
                     <button onClick={()=>this.registerNotice()} disabled={!text.length}>추가하기</button>
                     <button onClick={()=>this.deleteNotice()} disabled={!list[selectedIndex]}>삭제하기</button>
                 </div>
-                <ul>{menu}</ul>
+                <ul className="NoticeListContainer">{menu}</ul>
                 <div style={{backgroundColor:'gray', height:1, marginBottom:40}}/>
                 {selectedIndex >= 0 ? this.getMain(page, list[selectedIndex]) : null}
             </div>
@@ -228,7 +228,7 @@ class NoticeItem extends Component{
         const {title, list, selectedIndex} = this.state
         const items = list.map((item, index)=>{
             return(
-                <div key={index} style={{width:'95%'}}
+                <div key={index} style={{width:'95%', cursor:'pointer'}}
                     onClick={ ()=>this.handleChange('selectedIndex', index)}>
                         <span style={{width:'15%', float:'left', textAlign:'center', margin:'auto', fontSize:10}}>
                             <p>{item.link && item.link.length > 0 ? Pagelist[item.link] : ''}</p>

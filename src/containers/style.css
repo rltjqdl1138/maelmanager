@@ -371,3 +371,18 @@
     font-size: 0.5em;
     padding-left:10px;
 }
+
+.NoticeListContainer {
+    list-style-type: none;
+    height: 40px;
+    overflow:hidden;
+    overflow-y:scroll;
+}
+.NoticeListContainer > li {
+    width: 100px;
+    height: 20px;
+    float:left;
+    text-align: center;
+    border: 0.3px solid gray;
+    cursor: pointer;
+}
