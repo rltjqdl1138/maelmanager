@@ -131,7 +131,11 @@ class NoticeItem extends Component{
             return this.handleChange('list', [{text:'new'}, ...list])
         const pre = list.slice(0,selectedIndex+1)
         const back = list.slice(selectedIndex+1, list.length)
-        this.handleChange('list', [...pre, {text:'new'}, ...back])
+        this.setState(state=>({
+            ...state,
+            list:  [...pre, {text:'new'}, ...back],
+            selectedIndex: selectedIndex+1
+        }))
     }
     DeleteItem = ()=>{
         const {list, selectedIndex} = this.state
@@ -184,7 +188,7 @@ class NoticeItem extends Component{
                                 Size
                             </td>
                             <td>
-                                <input type="text" style={{width:'25px'}}
+                                <input type="text" style={{width:'30px'}}
                                     onChange={(e)=>{
                                         list[index].fontSize = parseInt(e.target.value)
                                         this.handleChange('list', list)
@@ -192,6 +196,37 @@ class NoticeItem extends Component{
                                     value={item.fontSize?item.fontSize:0}
                                 />
                                 pt
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td>padding</td>
+                            <td colSpan="3">
+                                <input type="text" style={{width:'25px'}}
+                                    value={item.padding ? item.padding : 0}
+                                    onChange={(e)=>{
+                                        list[index].padding = parseInt(e.target.value)
+                                        this.handleChange('list',list)
+                                    }} /> px
+
+                            </td>
+                            <td>
+                                <button onClick={()=>{
+                                    list[index].padding = 5
+                                    this.handleChange('list',list) }}>
+                                    5
+                                </button>
+                                <button onClick={()=>{
+                                    list[index].padding = 10
+                                    this.handleChange('list',list) }}>
+                                    10
+                                </button>
+                                <button onClick={()=>{
+                                    list[index].padding = 20
+                                    this.handleChange('list',list) }}>
+                                    20
+                                </button>
+
                             </td>
                         </tr>
                     </tbody>
@@ -252,12 +287,17 @@ class NoticeItem extends Component{
                     <button onClick={this.DeleteItem}>삭제하기</button>
                 </div>
                 <div>
-                    <span style={{width:'50%', float:'left'}}>
+                    <span style={{width:'50%', float:'left', overflowY:'scroll', height:600, borderWidth:1, borderColor:'black'}}>
                         {items}
+
                     </span>
                     <span style={{width:'30%', float:'left'}}>
                         {selectedIndex >=0 ? this.getEditer(selectedIndex) : null}
                     </span>
+                </div>
+
+                <div style={{display:'flex'}}>
+                    <button onClick={this.AddItem} style={{margin:'auto'}}>+</button>
                 </div>
 
             </div>

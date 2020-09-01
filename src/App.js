@@ -50,6 +50,7 @@ const menu=[
     ]},
     {title:'게시판', subPage:[
         {title:'게시판', page:0},
+        {title:'공지사항',page:1}
     ]},
     {title:'프로모션', subPage:[
         {title:'프로모션', page:0},
