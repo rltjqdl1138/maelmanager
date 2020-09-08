@@ -255,6 +255,7 @@ class NoticeItem extends Component{
                     <option value="Accountinfopage">계정정보</option>
                     <option value="Noticepage">공지사항</option>
                     <option value="HumanModal">휴면계정으로</option>
+                    <option value="Outpage">회원탈퇴하기</option>
                 </select>
             </div>
         )
@@ -316,5 +317,6 @@ const Pagelist = {
     "Userinfopage":'개인정보',
     "Accountinfopage":'계정정보',
     "Noticepage":'공지사항',
-    "HumanModal":"휴면계정으로"
+    "HumanModal":"휴면계정으로",
+    "Outpage":"회원탈퇴하기"
 }
