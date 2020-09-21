@@ -80,6 +80,10 @@ class SoundAppend extends Component{
         const list = response.data.data.map(item=> [{title:'...'},{title:'...'},{title:'...'},item])
         this.handleChange('savedCategory', list)
     }
+    deleteMusic = async(id)=>{
+        const response = await axios.delete(`/api/media/music?id=${id}`)
+        console.log(response.data)
+    }
     handleChange = (field, value) => this.setState({ [field]: value })
     handleSavedCategory=(list)=>
         this.handleChange('savedCategory', [...this.state.savedCategory, list])
@@ -104,6 +108,7 @@ class SoundAppend extends Component{
                         사운드 등록
                         <input type="submit" value="저장" style={{color:'red'}}/>
                         {handleClear?(<button onClick={handleClear}>뒤로</button>):null}
+                        {this.props.id ? (<button onClick={()=>this.deleteMusic(this.props.id)}>삭제</button>) : null}
                     </div>
                     <input name="MID" type="text" value={this.props.id?this.props.id:0} readOnly={true} hidden={true}/>
                     <SoundAppendInfo id={this.props.id}/>
