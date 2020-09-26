@@ -19,7 +19,7 @@ export default class Theme extends Component{
         const result2 = await axios.get('/api/media/theme?type=2')
         this.setState({
             ...this.state,
-            registered:result.data.result,
+            registered:result.data.result.sort((a,b)=>a.theme-b.theme),
             unregistered:result2.data.result
         })
     }

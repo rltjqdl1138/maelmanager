@@ -45,7 +45,7 @@ export default class MenuCategory extends Component {
     }
     handleActive = (group)=>{
         let newList, item, highIndex, middleIndex, wholeList
-        const {downComponent, isSelectedUp, registered, selectedID, high, middle, low} = this.state
+        const {downComponent, isSelectedUp, registered, selectedID, selectedIndex, high, middle, low} = this.state
         if(downComponent.group !== group || isSelectedUp) return;
         switch(group){
             case 0:
@@ -53,35 +53,36 @@ export default class MenuCategory extends Component {
                 wholeList = [...registered, {ID:item.ID, title:item.title, list:[]}]
                 break;
             case 1:
-                highIndex = registered.findIndex(e => e.ID === selectedID[0])
+                highIndex = selectedIndex[0]
                 item = middle.find(e => e.ID === downComponent.ID)
                 newList = [...registered[highIndex].list, {ID:item.ID, title:item.title, list:[]}]
                 registered[highIndex].list = newList
                 wholeList = registered
                 break;
             case 2:
-                highIndex = registered.findIndex(e => e.ID === selectedID[0])
-                middleIndex = registered[highIndex].list.findIndex(e => e.ID === selectedID[0])
+                highIndex = selectedIndex[0]
+                middleIndex = selectedIndex[1]
                 item = low.find(e => e.ID === downComponent.ID)
                 newList = [...registered[highIndex].list[middleIndex].list, {ID:item.ID, title:item.title, list:[]}]
                 registered[highIndex].list[middleIndex].list = newList
                 wholeList = registered
         }
+        this.handleChange('downComponent', {})
         this.handleChange('registered', wholeList)
+        this.handleChange('isSelectedUp', true)
     }
     handleDeactive = (group)=>{
         let oldList, newList, highIndex, middleIndex, lowIndex, wholeList
-        const {isSelectedUp, registered, selectedID, high, middle, low} = this.state
+        const {isSelectedUp, registered, selectedID, selectedIndex, high, middle, low} = this.state
         if( !isSelectedUp || !selectedID[group] ) return;
-
         switch(group){
             case 0:
-                highIndex = registered.findIndex(e => e.ID === selectedID[0])
+                highIndex = selectedIndex
                 wholeList = [...registered.slice(0,highIndex), ...registered.slice(highIndex+1,registered.length)]
                 break;
             case 1:
-                highIndex = registered.findIndex(e => e.ID === selectedID[0])
-                middleIndex = registered[highIndex].list.findIndex(e => e.ID === selectedID[1])
+                highIndex = selectedIndex[0]
+                middleIndex = selectedIndex[1]
                 
                 oldList = registered[highIndex].list
                 newList = [...oldList.slice(0,middleIndex), ...oldList.slice(middleIndex+1, oldList.length)]
@@ -90,18 +91,126 @@ export default class MenuCategory extends Component {
                 wholeList = registered
                 break;
             case 2:
-                highIndex = high.findIndex(e => e.ID === selectedID[0])
-                middleIndex = middle.findIndex(e => e.ID === selectedID[1])
-                lowIndex = low.findIndex(e => e.ID === selectedID[2])
+                highIndex = selectedIndex[0]
+                middleIndex = selectedIndex[1]
+                lowIndex = selectedIndex[2]
 
                 oldList = registered[highIndex].list[middleIndex].list
                 newList = [...oldList.slice(0,lowIndex), ...oldList.slice(lowIndex+1, oldList.length)]
+
                 
                 registered[highIndex].list[middleIndex].list = newList
                 wholeList = registered
                 break;
         }
         this.handleChange('registered', wholeList)
+    }
+    handleMoveUp = (group)=>{
+        let newList, oldList, wholeList, highIndex, middleIndex, lowIndex;
+        const {isSelectedUp, selectedID, selectedIndex, registered} = this.state
+        const newIndex = [...selectedIndex]
+        if( !isSelectedUp || !selectedID[group])
+            return;
+        
+        switch(group){
+            case 0:
+                wholeList = [...registered]
+                highIndex= selectedIndex[0]
+                if(!highIndex) return;
+                wholeList[highIndex] = registered[highIndex-1]
+                wholeList[highIndex-1] = registered[highIndex]
+                newIndex[0] = highIndex-1
+                break;
+            case 1:
+                highIndex = selectedIndex[0]
+                middleIndex = selectedIndex[1]
+
+                if(!middleIndex) return;
+                oldList = [...registered[highIndex].list]
+                newList = [...oldList]
+                newList[middleIndex] = oldList[middleIndex-1]
+                newList[middleIndex-1] = oldList[middleIndex]
+                registered[highIndex].list = newList
+                wholeList = registered
+
+                newIndex[1] = middleIndex-1
+                break
+            case 2:
+                highIndex = selectedIndex[0]
+                middleIndex = selectedIndex[1]
+                lowIndex = selectedIndex[2]
+                if(!lowIndex) return;
+                oldList = [...registered[highIndex].list[middleIndex].list]
+                newList = [...oldList]
+
+                newList[lowIndex] = oldList[lowIndex-1]
+                newList[lowIndex-1] = oldList[lowIndex]
+                registered[highIndex].list[middleIndex].list = newList
+                wholeList = registered
+
+                newIndex[2] = lowIndex-1
+                break;
+        }
+        
+        this.setState(state=>({
+            ...state,
+            registered: wholeList,
+            selectedIndex: newIndex
+        }))
+    }
+    handleMoveDown = (group)=>{
+        let newList, oldList, wholeList, highIndex, middleIndex, lowIndex;
+        const {isSelectedUp, selectedID, selectedIndex, registered} = this.state
+        const newIndex = [...selectedIndex]
+        
+        if( !isSelectedUp || !selectedID[group])
+            return;
+        
+        switch(group){
+            case 0:
+                highIndex= selectedIndex[0]
+                if(highIndex === registered.length-1) return;
+                wholeList = [...registered]
+                wholeList[highIndex] = registered[highIndex+1]
+                wholeList[highIndex+1] = registered[highIndex]
+                newIndex[0] = highIndex+1
+                break;
+            case 1:
+                highIndex = selectedIndex[0]
+                middleIndex = selectedIndex[1]
+                oldList = [...registered[highIndex].list]
+                newList = [...registered[highIndex].list]
+
+                if(middleIndex === oldList.length -1) return;
+                newList[middleIndex] = oldList[middleIndex+1]
+                newList[middleIndex+1] = oldList[middleIndex]
+                registered[highIndex].list = newList
+                wholeList = registered
+                newIndex[1] = middleIndex+1
+                break
+            case 2:
+                highIndex = selectedIndex[0]
+                middleIndex = selectedIndex[1]
+                lowIndex = selectedIndex[2]
+                oldList = [...registered[highIndex].list[middleIndex].list]
+                newList = [...registered[highIndex].list[middleIndex].list]
+
+
+                if(lowIndex === oldList.length -1) return;
+                newList[lowIndex] = oldList[lowIndex+1]
+                newList[lowIndex+1] = oldList[lowIndex]
+                registered[highIndex].list[middleIndex].list = newList
+                wholeList = registered
+                newIndex[2] = lowIndex+1
+                break;
+        }
+
+        this.setState(state=>({
+            ...state,
+            registered: wholeList,
+            selectedIndex: newIndex
+        }))
+
     }
     handleUpperClick = (group, ID, index)=>{
         const {selectedIndex, selectedID} = this.state
@@ -161,7 +270,6 @@ export default class MenuCategory extends Component {
             ind < 0 ? unregMiddle = [...unregMiddle, {ID:item.ID, title:item.title}]:
                 regMiddle[ind] = {ID:item.ID, title:item.title}
         })
-
         item = list ? list.find(e => e.ID === selectedID[1]) : null
         list = selectedID[1] && item ? item.list : []
         low.map(item => {
@@ -184,8 +292,8 @@ export default class MenuCategory extends Component {
                 </div>
                 <div className="SidebarContainer">
                     <div>
-                        <button>위로</button>
-                        <button>아래로</button>
+                        <button onClick={()=>this.handleMoveUp(0)}>위로</button>
+                        <button onClick={()=>this.handleMoveDown(0)}>아래로</button>
                         <button onClick={()=>this.handleDeactive(0)}>비활성화</button>
                     </div>
                     <ItemList
@@ -205,8 +313,8 @@ export default class MenuCategory extends Component {
 
                 <div className="SidebarContainer">
                     <div>
-                        <button>위로</button>
-                        <button>아래로</button>
+                        <button onClick={()=>this.handleMoveUp(1)}>위로</button>
+                        <button onClick={()=>this.handleMoveDown(1)}>아래로</button>
                         <button onClick={()=>this.handleDeactive(1)}>비활성화</button>
                     </div>
                     <ItemList
@@ -226,8 +334,8 @@ export default class MenuCategory extends Component {
 
                 <div className="SidebarContainer">
                     <div>
-                        <button>위로</button>
-                        <button>아래로</button>
+                        <button onClick={()=>this.handleMoveUp(2)}>위로</button>
+                        <button onClick={()=>this.handleMoveDown(2)}>아래로</button>
                         <button onClick={()=>this.handleDeactive(2)}>비활성화</button>
                     </div>
                     <ItemList
